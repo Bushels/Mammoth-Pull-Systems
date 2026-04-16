@@ -40,7 +40,13 @@ yarn-error.log*
 
 # local tooling artifacts
 .playwright-cli/
+.playwright-mcp/
+.claude/
 output/
+
+# dev-only screenshot / snapshot artifacts at repo root
+/*.png
+/*.yml
 
 # source media dump kept locally; curated site assets live in /public/media
 Images_Videos/

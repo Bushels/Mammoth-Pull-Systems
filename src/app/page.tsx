@@ -1,51 +1,110 @@
 import Image from "next/image";
 
+import { DeckScale } from "@/components/deck-scale";
 import { FadeIn } from "@/components/fade-in";
+import { HeroParallax } from "@/components/hero-parallax";
+import { InquiryForm } from "@/components/inquiry-form";
 import { SnowOverlay } from "@/components/snow-overlay";
+import { BRAND_NAME, CONTACT, MAMMOTH, MASTODON } from "@/lib/brand";
 
-const modelData = [
+const MAX_DECK_FEET = MAMMOTH.lengthFeet;
+const MAX_WEIGHT_LB = 90_000;
+
+type CargoKey = "dozer" | "picker" | "loader" | "tank" | "module" | "generator";
+
+type ModelCard = {
+  length: string;
+  lengthFeet: number;
+  name: string;
+  label: string;
+  image: string;
+  imageAlt: string;
+  description: string;
+  weight: {
+    fillLb: number;
+    headline: string;
+    detail: string;
+  };
+  specs: Array<{ label: string; value: string }>;
+  cargo: Array<{ key: CargoKey; x: number }>;
+  accent: string;
+  notes: string[];
+  footnote: string;
+};
+
+const modelData: ModelCard[] = [
   {
-    length: "25'",
-    name: "Mastodon",
-    label: "Compact heavy-haul platform",
+    length: MASTODON.length,
+    lengthFeet: MASTODON.lengthFeet,
+    name: MASTODON.name,
+    label: MASTODON.label,
+    image: "/media/mastodon-profile.jpg",
+    imageAlt: "Empty Mastodon sled in profile on snow, red deck and white runners.",
     description:
-      "The Mastodon is the lower, point-loading sled in the line. In the field it commonly carries 40,000 to 60,000 lb loads and has even hauled a CAT D8 dozer.",
-    widthClass: "w-[47%]",
-    notes: [
-      "Point-loading friendly for heavy equipment",
-      "Keeps the load low to the ground",
-      "Built for smaller footprints that still need real ruggedness",
+      "The lower, point-loading sled. Field-run at 40,000 to 60,000 lb. It has hauled a CAT D8 dozer.",
+    weight: {
+      fillLb: 60_000,
+      headline: "40,000 – 60,000 lb",
+      detail: "Typical field load. Point-loaded weight sits close to the deck.",
+    },
+    specs: [
+      { label: "Deck length", value: "25 ft" },
+      { label: "Deck height", value: "32.5 in" },
+      { label: "Deck style", value: "Low, point-load" },
+      { label: "Typical load", value: "40k – 60k lb" },
     ],
-    footnote: "Field-use numbers, not formal engineering specification language.",
+    cargo: [{ key: "dozer", x: 4 }],
+    accent: "var(--color-alert-red)",
+    notes: [
+      "Low deck for concentrated, point-loaded weight",
+      "Built around tracked equipment and heavy iron",
+      "Compact footprint without giving up ruggedness",
+    ],
+    footnote: "Weights reflect field experience, not a published deck rating.",
   },
   {
-    length: "53'",
-    name: "Mammoth",
-    label: "Long-deck haul platform",
+    length: MAMMOTH.length,
+    lengthFeet: MAMMOTH.lengthFeet,
+    name: MAMMOTH.name,
+    label: MAMMOTH.label,
+    image: "/media/mammoth-crane.jpg",
+    imageAlt: "A Peterbilt picker truck loaded on a Mammoth sled at arctic twilight.",
     description:
-      "The Mammoth brings over-the-road trailer deck length into snow and ice hauling. The deck is rated for 65,000 lb at highway speeds, has been used up to 85,000 lb, and is best kept around 70,000 lb or under in regular work.",
-    widthClass: "w-full",
-    notes: [
-      "Maximum deck space for larger load configurations",
-      "More flexibility for tanks, modules, and long freight",
-      "Built to stay useful across a wider range of load setups",
+      "A full 53' of usable deck. Rated 65,000 lb at highway speeds. Run up to 85,000 lb in the field.",
+    weight: {
+      fillLb: 85_000,
+      headline: "Up to 85,000 lb",
+      detail: "Rated 65,000 · Regular ≤ 70,000 · Peak 85,000 lb.",
+    },
+    specs: [
+      { label: "Deck length", value: "53 ft" },
+      { label: "Deck profile", value: "Low, sled-runner" },
+      { label: "Rated load", value: "65,000 lb" },
+      { label: "Peak field load", value: "85,000 lb" },
     ],
-    footnote: "Site copy should distinguish deck rating from observed field use.",
+    cargo: [{ key: "picker", x: 10 }],
+    accent: "var(--color-ice-blue)",
+    notes: [
+      "Over-the-road trailer length, built for snow and ice",
+      "Sized for tanks, modules, and long freight",
+      "Configurable for a wide range of load setups",
+    ],
+    footnote: "Deck rating and field-observed capacity are listed separately.",
   },
 ];
 
 const capabilityItems = [
   {
-    title: "North Slope Positioning",
-    body: "The homepage should speak directly to Alaska, Prudhoe Bay, equipment rental groups, energy service companies, and northern municipal operators that already understand frozen-route logistics.",
+    title: "Built for the Slope",
+    body: "Prudhoe Bay, Deadhorse, and the ice roads between them. These sleds were designed around northern routes, not adapted to them.",
   },
   {
-    title: "Ruggedness First",
-    body: "The product story should lean into abuse tolerance, point loading, structural confidence, and real jobs already completed instead of sounding like light-duty winter marketing.",
+    title: "Built for Abuse",
+    body: "Structural steel frames. Point-loaded decks. Reinforcement where the ice hits first. Every sled on the road has already done real work.",
   },
   {
-    title: "Marketable, Not Just Technical",
-    body: "This still has to win new work. The visuals should feel aspirational and credible at the same time: premium presentation, real field proof, and clear reasons to inquire.",
+    title: "Field-Proven",
+    body: "Tanks, modules, tracked iron, highway trucks. Ask for a haul history and we'll walk you through what's moved and where.",
   },
 ];
 
@@ -56,18 +115,39 @@ const buyerGroups = [
   "Municipal and borough operations",
 ];
 
-const payloadExamples = [
+type PayloadShowcase = {
+  title: string;
+  body: string;
+  image: string;
+  imageAlt: string;
+  cargo: { key: CargoKey; x: number };
+  deckFeet: number;
+};
+
+const payloadShowcases: PayloadShowcase[] = [
   {
     title: "Process and utility tanks",
-    body: "Tank moves show why long deck options matter and why keeping the haul stable over snow and ice is the actual product story.",
+    body: "Long-deck sleds keep tanks stable across snow and ice. That stability is the job.",
+    image: "/media/payload-tank.jpg",
+    imageAlt: "A large process tank secured on a Mammoth sled with supply tanks beside it.",
+    cargo: { key: "tank", x: 16 },
+    deckFeet: MAMMOTH.lengthFeet,
   },
   {
     title: "Modules and framed systems",
-    body: "Larger freight asks for usable deck space and more configuration flexibility, which is where the Mammoth earns its keep.",
+    body: "Oversized freight needs usable deck and tie-down flexibility. The Mammoth is built for it.",
+    image: "/media/payload-module.jpg",
+    imageAlt: "A framed drilling module on a Mammoth sled being pulled by a tracked prime mover.",
+    cargo: { key: "module", x: 14 },
+    deckFeet: MAMMOTH.lengthFeet,
   },
   {
-    title: "Tracked equipment and heavy point loads",
-    body: "The Mastodon proves its value when heavy equipment needs to sit low, stay stable, and put concentrated load into the platform.",
+    title: "Tracked equipment and point loads",
+    body: "Low deck, concentrated load, stable ride. The Mastodon is built around point-loaded weight.",
+    image: "/media/payload-loader.jpg",
+    imageAlt: "A Volvo wheel loader with forks on a Mammoth sled at dusk.",
+    cargo: { key: "loader", x: 12 },
+    deckFeet: MAMMOTH.lengthFeet,
   },
 ];
 
@@ -79,146 +159,155 @@ const planningInputs = [
   "Timing, schedule, and deployment window",
 ];
 
-const heroHighlights = [
-  {
-    length: "25'",
-    name: "Mastodon",
-    detail: "Lower point-loading sled for heavy equipment and compact northern moves.",
-  },
-  {
-    length: "53'",
-    name: "Mammoth",
-    detail: "Long-deck haul platform for tanks, modules, and larger freight footprints.",
-  },
-];
-
 export default function Home() {
   return (
     <main className="overflow-x-clip bg-[var(--color-deep-night)] text-white">
-      <section className="relative isolate min-h-screen overflow-hidden border-b border-white/10">
-        <Image
-          src="/media/hero-haul.jpg"
-          alt="Heavy haul sled moving a tank across snow and ice."
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
+      {/* ================================================================ */}
+      {/* Hero                                                              */}
+      {/* ================================================================ */}
+      <section className="relative isolate min-h-[100svh] overflow-hidden border-b border-white/10">
+        <HeroParallax
+          src="/media/hero-convoy.jpg"
+          alt="A convoy of tracked prime movers pulling Mammoth Pull Systems sleds across open arctic tundra."
         />
-        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(7,17,30,0.9)_10%,rgba(7,17,30,0.62)_45%,rgba(7,17,30,0.82)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(158,196,219,0.24),transparent_42%)]" />
+        {/* Lighter gradient on the left only so more of the image breathes. */}
+        <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(7,17,30,0.86)_0%,rgba(7,17,30,0.5)_45%,rgba(7,17,30,0.12)_75%,rgba(7,17,30,0.4)_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-56 bg-[linear-gradient(180deg,rgba(7,17,30,0.7)_0%,transparent_100%)]" />
         <SnowOverlay />
 
         <header className="absolute inset-x-0 top-0 z-20">
-          <div className="section-shell flex items-center justify-between py-5">
-            <a href="#" className="flex items-center gap-3">
+          <div className="section-shell flex items-center justify-between gap-4 py-4 sm:py-5">
+            <a
+              href="#"
+              aria-label={`${BRAND_NAME} home`}
+              className="flex items-center gap-4 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+            >
               <Image
                 src="/media/logo.png"
-                alt="Mammoth Pull Systems logo"
-                width={92}
-                height={61}
-                className="h-auto w-24 sm:w-28"
+                alt={`${BRAND_NAME} logo`}
+                width={220}
+                height={145}
+                priority
+                className="h-auto w-36 drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)] sm:w-48 lg:w-56"
               />
-              <span className="hidden max-w-40 text-xs uppercase tracking-[0.3em] text-white/72 sm:block">
-                Heavy-haul sleds for snow and ice terrain
+              <span className="hidden max-w-48 text-xs font-semibold uppercase tracking-[0.3em] text-white/80 lg:block">
+                Heavy-Haul Snow Sleds
               </span>
             </a>
-            <nav className="hidden items-center gap-7 text-xs uppercase tracking-[0.28em] text-white/70 md:flex">
-              <a href="#north" className="transition hover:text-white">
-                North
+            <nav
+              aria-label="Primary"
+              className="hidden items-center gap-6 text-xs uppercase tracking-[0.28em] text-white/78 md:flex"
+            >
+              <a
+                href="#north"
+                className="rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+              >
+                Use Cases
               </a>
-              <a href="#models" className="transition hover:text-white">
-                Sizes
+              <a
+                href="#models"
+                className="rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+              >
+                Sleds
               </a>
-              <a href="#payloads" className="transition hover:text-white">
+              <a
+                href="#payloads"
+                className="rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+              >
                 Payloads
               </a>
-              <a href="#planning" className="transition hover:text-white">
-                Planning
+              <a
+                href={`tel:${CONTACT.phone}`}
+                className="hidden items-center gap-2 rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)] lg:inline-flex"
+              >
+                <span aria-hidden="true">☏</span>
+                {CONTACT.phoneDisplay}
+              </a>
+              <a
+                href="#inquiry"
+                className="rounded-full border border-white/35 px-4 py-2 text-white transition hover:border-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+              >
+                Get a Quote
               </a>
             </nav>
+            <div className="flex items-center gap-2 md:hidden">
+              <a
+                href={`tel:${CONTACT.phone}`}
+                aria-label={`Call ${CONTACT.phoneDisplay}`}
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:border-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+              >
+                <span aria-hidden="true" className="text-base">☏</span>
+              </a>
+              <a
+                href="#inquiry"
+                className="inline-flex min-h-11 items-center rounded-full border border-white/30 px-4 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-white transition hover:border-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+              >
+                Quote
+              </a>
+            </div>
           </div>
         </header>
 
-        <div className="section-shell relative z-10 flex min-h-screen items-center py-24 sm:py-28">
-          <div className="grid w-full gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-end lg:gap-16">
-            <FadeIn className="max-w-3xl pt-20 sm:pt-24 lg:pt-28">
-              <p className="eyebrow mb-6">
-                Alaska • North Slope • Prudhoe Bay • Remote snow-and-ice hauling
-              </p>
-              <h1 className="max-w-4xl font-display text-6xl uppercase leading-[0.9] tracking-[0.04em] text-white sm:text-7xl lg:text-[7.5rem]">
-                Built to Haul the North
-              </h1>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-white/82 sm:text-lg">
-                Mammoth Pull Systems builds oversized hauling sleds for tanks,
-                modules, equipment, and support cargo moving across northern snow
-                and ice terrain.
-              </p>
+        <div className="section-shell relative z-10 flex min-h-[100svh] items-end pb-20 pt-36 sm:pb-24 sm:pt-40">
+          <FadeIn className="max-w-2xl">
+            <h1 className="font-display text-5xl uppercase leading-[0.95] tracking-[0.04em] text-white sm:text-7xl lg:text-[8rem] lg:leading-[0.9]">
+              Built to Haul the North
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-8 text-white/88 sm:text-lg">
+              {BRAND_NAME} builds heavy-haul sleds for tanks, modules, and
+              equipment moving across snow and ice.
+            </p>
 
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                <a href="#models" className="hero-button hero-button-primary">
-                  See the two sizes
-                </a>
-                <a href="#north" className="hero-button hero-button-secondary">
-                  Northern use cases
-                </a>
-              </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+              <a href="#inquiry" className="hero-button hero-button-primary">
+                Request Specs
+              </a>
+              <a
+                href={`tel:${CONTACT.phone}`}
+                className="hero-button hero-button-secondary"
+                aria-label={`Call ${CONTACT.phoneDisplay}`}
+              >
+                <span aria-hidden="true" className="mr-2 text-sm">☏</span>
+                {CONTACT.phoneDisplay}
+              </a>
+            </div>
 
-              <div className="mt-12 grid gap-3 text-left text-xs uppercase tracking-[0.28em] text-white/66 sm:grid-cols-2 lg:grid-cols-4">
-                <span>Snow-and-ice transport</span>
-                <span>Oversized northern loads</span>
-                <span>Custom fabrication</span>
-                <span>Industrial haul focus</span>
-              </div>
-            </FadeIn>
-
-            <FadeIn
-              delay={0.12}
-              className="hidden self-end border-l border-white/16 pl-7 text-right lg:block"
-            >
-              <p className="eyebrow text-[var(--color-ice-blue)]">
-                Two Field-Proven Platforms
-              </p>
-              <div className="mt-8 space-y-8">
-                {heroHighlights.map((item) => (
-                  <div key={item.name} className="space-y-2">
-                    <div className="flex items-end justify-end gap-3">
-                      <span className="font-display text-6xl uppercase tracking-[0.04em] text-white/96">
-                        {item.length}
-                      </span>
-                      <span className="font-display text-3xl uppercase tracking-[0.06em] text-white/92">
-                        {item.name}
-                      </span>
-                    </div>
-                    <p className="ml-auto max-w-[16rem] text-sm leading-7 text-white/68">
-                      {item.detail}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </FadeIn>
-          </div>
+            <div className="mt-10 grid gap-2 text-left text-xs uppercase tracking-[0.28em] text-white/70 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
+              <span>25&apos; Mastodon</span>
+              <span>53&apos; Mammoth</span>
+              <span>Custom fabrication</span>
+              <span>Industrial haul focus</span>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
+      {/* ================================================================ */}
+      {/* Northern Ops                                                      */}
+      {/* ================================================================ */}
       <section
         id="north"
         className="border-b border-[var(--color-ice-border)] bg-[var(--color-snowfield)] text-[var(--color-deep-night)]"
       >
-        <div className="section-shell grid gap-16 py-24 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+        <div className="section-shell grid gap-16 py-20 sm:py-24 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
           <FadeIn className="lg:sticky lg:top-24">
             <p className="eyebrow text-[var(--color-alert-red)]">Northern Ops</p>
             <h2 className="mt-4 max-w-xl font-display text-4xl uppercase leading-[0.95] tracking-[0.04em] text-[var(--color-deep-night)] sm:text-5xl">
-              Built for the buyers already operating in the North.
+              We build for the North Slope.
             </h2>
             <p className="mt-6 max-w-lg text-base leading-8 text-slate-700 sm:text-lg">
-              The first audience is current northern operators and rental groups.
-              The page should feel credible to people who already understand what
-              it takes to move serious freight over frozen ground.
+              If you&apos;ve moved freight over frozen ground, you already know
+              what fails and what doesn&apos;t. Our sleds are built for the
+              second category &mdash; routes where recovery is expensive and
+              schedule is everything.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               {buyerGroups.map((group) => (
-                <span key={group} className="rounded-full bg-[var(--color-deep-night)] px-4 py-2 text-xs uppercase tracking-[0.22em] text-white/82">
+                <span
+                  key={group}
+                  className="rounded-full bg-[var(--color-deep-night)] px-4 py-2 text-xs uppercase tracking-[0.22em] text-white/82"
+                >
                   {group}
                 </span>
               ))}
@@ -247,18 +336,17 @@ export default function Home() {
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
                   src="/media/yard-load.jpg"
-                  alt="Mammoth sled assemblies loaded in a snowy yard."
+                  alt="Mammoth sled assemblies staged and loaded in a snowy yard."
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 60vw"
                 />
               </div>
               <div className="space-y-2 p-5">
-                <p className="eyebrow text-[var(--color-alert-red)]">Field-ready</p>
+                <p className="eyebrow text-[var(--color-alert-red)]">Yard-ready</p>
                 <p className="text-sm leading-7 text-slate-700">
-                  The product already has the right proof photography: yard
-                  loading, structural steel, and freight that reads as real work
-                  instead of staged marketing.
+                  Staged in the yard, loaded once, pulled out. The work already
+                  done is the spec sheet.
                 </p>
               </div>
             </FadeIn>
@@ -266,18 +354,18 @@ export default function Home() {
             <FadeIn className="image-panel">
               <div className="relative aspect-[5/4] overflow-hidden">
                 <Image
-                  src="/media/module-haul.jpg"
-                  alt="Large module carried on a Mammoth sled."
+                  src="/media/hero-haul.jpg"
+                  alt="A tank secured on a sled pulled by a tracked prime mover."
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 30vw"
                 />
               </div>
               <div className="p-5">
-                <p className="eyebrow text-[var(--color-alert-red)]">Deck space</p>
+                <p className="eyebrow text-[var(--color-alert-red)]">In haul</p>
                 <p className="text-sm leading-7 text-slate-700">
-                  The Mammoth story is deck space, configuration flexibility, and
-                  over-the-road trailer length translated into snow hauling.
+                  Process tanks, tracked prime movers, ice surface. This is
+                  what every deployed haul looks like.
                 </p>
               </div>
             </FadeIn>
@@ -285,18 +373,18 @@ export default function Home() {
             <FadeIn className="image-panel">
               <div className="relative aspect-[5/4] overflow-hidden">
                 <Image
-                  src="/media/tank-detail.jpg"
-                  alt="Operators standing beside a tank loaded on a sled."
+                  src="/media/convoy-road.jpg"
+                  alt="A cement truck on a sled pulled across an open ice road."
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 30vw"
                 />
               </div>
               <div className="p-5">
-                <p className="eyebrow text-[var(--color-alert-red)]">Human scale</p>
+                <p className="eyebrow text-[var(--color-alert-red)]">Load variety</p>
                 <p className="text-sm leading-7 text-slate-700">
-                  Putting operators in frame helps buyers read deck scale and
-                  ruggedness faster than copy alone ever will.
+                  Tanks, trucks, modules, dozers, gensets. Every shape of
+                  industrial load gets on a deck.
                 </p>
               </div>
             </FadeIn>
@@ -304,195 +392,301 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ================================================================ */}
+      {/* Two Sizes — Model cards                                           */}
+      {/* ================================================================ */}
       <section
         id="models"
         className="border-b border-white/10 bg-[linear-gradient(180deg,#08111b_0%,#0d1c30_100%)]"
       >
-        <div className="section-shell py-24">
+        <div className="section-shell py-20 sm:py-24">
           <FadeIn className="max-w-3xl">
             <p className="eyebrow text-[var(--color-ice-blue)]">Two Sizes</p>
             <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-[0.04em] text-white sm:text-5xl">
               One lower point-loader. One long-deck hauler.
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/74 sm:text-lg">
-              This is where the site should shift from mood into practical
-              selling. Use real field history, clear tradeoffs, and simple
-              language that matches how operators already talk about loads.
+              Two sleds. Two jobs. Choose by load weight and footprint, not by
+              name.
             </p>
           </FadeIn>
 
-          <div className="mt-14 grid gap-10 lg:grid-cols-2">
-            {modelData.map((model, index) => (
-              <FadeIn
-                key={model.name}
-                delay={index * 0.1}
-                className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-[0_30px_80px_rgba(0,0,0,0.2)]"
-              >
-                <div className="flex items-end justify-between gap-4 border-b border-white/10 pb-7">
-                  <div>
-                    <p className="eyebrow text-[var(--color-ice-blue)]">
+          <div className="mt-12 grid gap-8 lg:grid-cols-2 lg:gap-10">
+            {modelData.map((model, index) => {
+              const fillPct = Math.round(
+                (model.weight.fillLb / MAX_WEIGHT_LB) * 100,
+              );
+              return (
+                <FadeIn
+                  key={model.name}
+                  delay={index * 0.1}
+                  className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_30px_80px_rgba(0,0,0,0.22)]"
+                >
+                  <div className="relative aspect-[16/9] overflow-hidden">
+                    <Image
+                      src={model.image}
+                      alt={model.imageAlt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 48vw"
+                    />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(8,17,27,0.88)_100%)]" />
+                    <p className="absolute bottom-4 left-5 font-semibold text-[0.72rem] uppercase tracking-[0.28em] text-white/90">
                       {model.label}
                     </p>
-                    <h3 className="mt-3 font-display text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">
-                      {model.name}
-                    </h3>
                   </div>
-                  <p className="font-display text-6xl uppercase tracking-[0.04em] text-white/94 sm:text-7xl">
-                    {model.length}
-                  </p>
-                </div>
 
-                <div className="mt-8">
-                  <div className="h-3 rounded-full bg-white/10">
+                  <div className="p-6 sm:p-8">
+                    <div className="flex items-end justify-between gap-4 border-b border-white/10 pb-5">
+                      <h3 className="font-display text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">
+                        {model.name}
+                      </h3>
+                      <p className="font-display text-5xl uppercase leading-none tracking-[0.04em] text-white/94 sm:text-6xl">
+                        {model.length}
+                      </p>
+                    </div>
+
+                    {/* Deck scale with silhouette */}
+                    <div className="mt-6">
+                      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-white/55">
+                        Fits on the deck
+                      </p>
+                      <div className="mt-3 rounded-xl bg-black/30 p-4 text-white/88">
+                        <DeckScale
+                          deckFeet={model.lengthFeet}
+                          maxDeckFeet={MAX_DECK_FEET}
+                          cargo={model.cargo}
+                          accent={model.accent}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Load weight bar */}
                     <div
-                      className={`h-full rounded-full bg-[linear-gradient(90deg,var(--color-alert-red),var(--color-ice-blue))] ${model.widthClass}`}
-                    />
+                      className="mt-6"
+                      aria-label={`Load capacity: ${model.weight.headline}, max of the chart is ${MAX_WEIGHT_LB.toLocaleString()} lb`}
+                    >
+                      <div className="flex items-center justify-between text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-white/55">
+                        <span>Load weight</span>
+                        <span>lb</span>
+                      </div>
+                      <p className="mt-2 font-display text-2xl uppercase tracking-[0.04em] text-white">
+                        {model.weight.headline}
+                      </p>
+                      <div className="relative mt-3 h-4 rounded-full bg-white/8">
+                        <div
+                          className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-alert-red),var(--color-ice-blue))]"
+                          style={{ width: `${fillPct}%` }}
+                        />
+                      </div>
+                      <div className="mt-2 flex justify-between text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-white/55">
+                        <span>0</span>
+                        <span>30k</span>
+                        <span>60k</span>
+                        <span>90k</span>
+                      </div>
+                      <p className="mt-3 text-sm leading-6 text-white/68">
+                        {model.weight.detail}
+                      </p>
+                    </div>
+
+                    {/* Specs grid */}
+                    <dl className="mt-6 grid grid-cols-2 gap-3 rounded-xl bg-black/20 p-4 text-sm">
+                      {model.specs.map((spec) => (
+                        <div key={spec.label} className="space-y-1">
+                          <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-white/55">
+                            {spec.label}
+                          </dt>
+                          <dd className="font-display text-lg uppercase tracking-[0.04em] text-white">
+                            {spec.value}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+
+                    <p className="mt-6 text-sm leading-7 text-white/72">
+                      {model.description}
+                    </p>
+
+                    <ul className="mt-6 space-y-2.5 text-sm leading-7 text-white/82">
+                      {model.notes.map((note) => (
+                        <li key={note} className="flex items-start gap-3">
+                          <span className="mt-2 h-2.5 w-2.5 flex-none rounded-full bg-[var(--color-ice-blue)]" />
+                          <span>{note}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <p className="mt-6 border-t border-white/10 pt-4 text-[0.68rem] uppercase tracking-[0.22em] text-white/55">
+                      {model.footnote}
+                    </p>
                   </div>
-                  <p className="mt-5 text-sm leading-7 text-white/72">
-                    {model.description}
-                  </p>
-                </div>
-
-                <ul className="mt-8 space-y-3 text-sm leading-7 text-white/82">
-                  {model.notes.map((note) => (
-                    <li key={note} className="flex items-start gap-3">
-                      <span className="mt-2 h-2.5 w-2.5 flex-none rounded-full bg-[var(--color-ice-blue)]" />
-                      <span>{note}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="mt-7 border-t border-white/10 pt-5 text-xs uppercase tracking-[0.22em] text-white/46">
-                  {model.footnote}
-                </p>
-              </FadeIn>
-            ))}
+                </FadeIn>
+              );
+            })}
           </div>
         </div>
       </section>
 
+      {/* ================================================================ */}
+      {/* Payloads (photos + silhouettes)                                   */}
+      {/* ================================================================ */}
       <section
         id="payloads"
         className="border-b border-[var(--color-ice-border)] bg-white text-[var(--color-deep-night)]"
       >
-        <div className="section-shell grid gap-16 py-24 lg:grid-cols-[1.02fr_0.98fr]">
-          <div className="space-y-6">
-            <FadeIn>
-              <p className="eyebrow text-[var(--color-alert-red)]">Payload Examples</p>
-              <h2 className="mt-4 max-w-xl font-display text-4xl uppercase leading-[0.95] tracking-[0.04em] sm:text-5xl">
-                Rugged enough for real northern freight.
-              </h2>
-              <p className="mt-6 max-w-xl text-base leading-8 text-slate-700 sm:text-lg">
-                This is the section where the site proves the sleds are not
-                theoretical. Point loads, tanks, and working equipment should all
-                read as normal, not exceptional.
-              </p>
-            </FadeIn>
+        <div className="section-shell py-20 sm:py-24">
+          <FadeIn className="max-w-3xl">
+            <p className="eyebrow text-[var(--color-alert-red)]">Payload Examples</p>
+            <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-[0.04em] sm:text-5xl">
+              Rugged enough for real northern freight.
+            </h2>
+            <p className="mt-6 max-w-xl text-base leading-8 text-slate-700 sm:text-lg">
+              Tanks. Modules. Tracked equipment. These aren&apos;t edge cases
+              &mdash; they&apos;re what&apos;s been on the decks.
+            </p>
+          </FadeIn>
 
-            <FadeIn className="image-panel overflow-hidden">
-              <div className="relative aspect-[16/10]">
-                <Image
-                  src="/media/dozer-load.jpg"
-                  alt="Tracked equipment carried on a sled in snow."
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 52vw"
-                />
-              </div>
-            </FadeIn>
-          </div>
-
-          <div className="space-y-7 lg:pt-20">
-            {payloadExamples.map((item, index) => (
+          <div className="mt-12 grid gap-8 lg:grid-cols-3">
+            {payloadShowcases.map((item, index) => (
               <FadeIn
                 key={item.title}
                 delay={index * 0.08}
-                className="border-b border-[var(--color-ice-border)] pb-7"
+                className="overflow-hidden rounded-[1.75rem] border border-[var(--color-ice-border)] bg-white shadow-[0_30px_70px_rgba(8,17,27,0.08)]"
               >
-                <p className="font-display text-3xl uppercase tracking-[0.05em] text-[var(--color-deep-night)]">
-                  {item.title}
-                </p>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-700">
-                  {item.body}
-                </p>
+                <div className="relative aspect-[16/11] overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.imageAlt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 33vw"
+                  />
+                </div>
+                <div className="p-5 sm:p-6">
+                  <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-[var(--color-deep-night)]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-700">
+                    {item.body}
+                  </p>
+
+                  {/* Mini silhouette chip — shows how much deck this load
+                      typically uses on a Mammoth-sized sled. */}
+                  <div className="mt-5 rounded-xl bg-[var(--color-snowfield)] p-4">
+                    <p className="text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-alert-red)]">
+                      Deck footprint
+                    </p>
+                    <div className="mt-2 -mx-1 text-[var(--color-deep-night)]">
+                      <DeckScale
+                        deckFeet={item.deckFeet}
+                        maxDeckFeet={MAX_DECK_FEET}
+                        cargo={[item.cargo]}
+                        accent="#0b1c2f"
+                      />
+                    </div>
+                  </div>
+                </div>
               </FadeIn>
             ))}
-
-            <FadeIn className="image-panel overflow-hidden">
-              <div className="relative aspect-[4/3]">
-                <Image
-                  src="/media/module-haul.jpg"
-                  alt="Large module supported on a Mammoth pull system sled."
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                />
-              </div>
-            </FadeIn>
           </div>
         </div>
       </section>
 
-      <section id="planning" className="bg-[var(--color-deep-night)]">
-        <div className="section-shell py-24">
-          <FadeIn className="rounded-[2.5rem] border border-white/10 bg-[linear-gradient(135deg,rgba(214,43,31,0.16),rgba(76,132,181,0.12))] p-8 sm:p-12">
-            <p className="eyebrow text-[var(--color-ice-blue)]">Build Planning</p>
-            <h2 className="mt-4 max-w-3xl font-display text-4xl uppercase leading-[0.95] tracking-[0.04em] text-white sm:text-5xl">
-              Before a build starts, we want five things clear.
+      {/* ================================================================ */}
+      {/* Inquiry                                                           */}
+      {/* ================================================================ */}
+      <section id="inquiry" className="bg-[var(--color-deep-night)]">
+        <div className="section-shell py-20 sm:py-24">
+          <FadeIn className="max-w-3xl">
+            <p className="eyebrow text-[var(--color-ice-blue)]">Request Specs</p>
+            <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-[0.04em] text-white sm:text-5xl">
+              Call, email, or send the five things.
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/74 sm:text-lg">
-              The cleanest marketing move is to show buyers that the conversation
-              will be organized from the first call. Clarity on load, route, and
-              setup is part of the product.
+              Prefer to talk? Pick up the phone. Prefer to type? Send the load,
+              route, and timeline and we&apos;ll come back with a plan.
             </p>
+          </FadeIn>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          {/* Quick-contact strip — always visible, before the form. */}
+          <FadeIn className="mt-8 grid gap-3 sm:grid-cols-2">
+            <a
+              href={`tel:${CONTACT.phone}`}
+              className="group flex items-center justify-between gap-4 rounded-2xl border border-white/12 bg-white/[0.04] p-5 transition hover:border-white/24 hover:bg-white/[0.08] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+            >
+              <div>
+                <p className="eyebrow text-[var(--color-ice-blue)]">Call</p>
+                <p className="mt-1 font-display text-2xl uppercase tracking-[0.05em] text-white sm:text-3xl">
+                  {CONTACT.phoneDisplay}
+                </p>
+                <p className="mt-1 text-sm text-white/60">
+                  {CONTACT.person}, direct line
+                </p>
+              </div>
+              <span
+                aria-hidden="true"
+                className="flex h-12 w-12 flex-none items-center justify-center rounded-full border border-white/20 text-lg transition group-hover:border-white/40"
+              >
+                ☏
+              </span>
+            </a>
+
+            <a
+              href={`mailto:${CONTACT.email}`}
+              className="group flex items-center justify-between gap-4 rounded-2xl border border-white/12 bg-white/[0.04] p-5 transition hover:border-white/24 hover:bg-white/[0.08] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+            >
+              <div className="min-w-0">
+                <p className="eyebrow text-[var(--color-ice-blue)]">Email</p>
+                <p className="mt-1 truncate font-display text-2xl uppercase tracking-[0.05em] text-white sm:text-3xl">
+                  {CONTACT.email}
+                </p>
+                <p className="mt-1 text-sm text-white/60">
+                  Responses within one business day
+                </p>
+              </div>
+              <span
+                aria-hidden="true"
+                className="flex h-12 w-12 flex-none items-center justify-center rounded-full border border-white/20 text-lg transition group-hover:border-white/40"
+              >
+                ✉
+              </span>
+            </a>
+          </FadeIn>
+
+          {/* Or the form, which is clearly a third option. */}
+          <FadeIn className="mt-10 rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(214,43,31,0.12),rgba(76,132,181,0.10))] p-6 sm:p-8 lg:p-10">
+            <p className="eyebrow text-[var(--color-ice-blue)]">Or send the five</p>
+            <h3 className="mt-3 font-display text-3xl uppercase tracking-[0.05em] text-white sm:text-4xl">
+              Tell us what you&apos;re hauling.
+            </h3>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
               {planningInputs.map((item, index) => (
-                <FadeIn
+                <div
                   key={item}
-                  delay={index * 0.05}
-                  className="rounded-[1.6rem] border border-white/10 bg-black/18 p-5"
+                  className="rounded-2xl border border-white/10 bg-black/20 p-4"
                 >
-                  <p className="text-xs uppercase tracking-[0.3em] text-[var(--color-ice-blue)]">
+                  <p className="text-[0.65rem] uppercase tracking-[0.3em] text-[var(--color-ice-blue)]">
                     0{index + 1}
                   </p>
-                  <p className="mt-4 text-sm leading-7 text-white/84">{item}</p>
-                </FadeIn>
+                  <p className="mt-3 text-sm leading-6 text-white/84">{item}</p>
+                </div>
               ))}
             </div>
 
-            <div className="mt-12 flex flex-col gap-5 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="font-display text-3xl uppercase tracking-[0.05em] text-white">
-                  Mammoth Pull Systems
-                </p>
-                <p className="mt-2 max-w-xl text-sm leading-7 text-white/66">
-                  Built with a heavy-haul mindset for Alaska and northern
-                  snow-and-ice operations that need rugged equipment under real
-                  loads.
-                </p>
-                <div className="mt-6 space-y-2 text-sm leading-7 text-white/82">
-                  <p className="font-display text-2xl uppercase tracking-[0.05em] text-white">
-                    Contact Nathan Turchyn
-                  </p>
-                  <a
-                    href="tel:+13068397481"
-                    className="block w-fit transition hover:text-[var(--color-ice-blue)]"
-                  >
-                    (306) 839-7481
-                  </a>
-                  <a
-                    href="mailto:nathan@mpsgroup.ca"
-                    className="block w-fit transition hover:text-[var(--color-ice-blue)]"
-                  >
-                    nathan@mpsgroup.ca
-                  </a>
-                </div>
-              </div>
-              <a href="#" className="hero-button hero-button-secondary w-full sm:w-auto">
-                Back to the top
-              </a>
+            <div className="mt-10 rounded-2xl border border-white/10 bg-black/28 p-5 sm:p-7">
+              <InquiryForm />
             </div>
+          </FadeIn>
+
+          <FadeIn className="mt-12 border-t border-white/10 pt-8 text-sm leading-7 text-white/64">
+            <p className="font-display text-xl uppercase tracking-[0.05em] text-white">
+              {BRAND_NAME}
+            </p>
+            <p className="mt-1 max-w-xl">
+              Heavy-haul sleds built for snow and ice.
+            </p>
           </FadeIn>
         </div>
       </section>
