@@ -145,7 +145,7 @@ const businessLd = {
   legalName: BRAND_NAME,
   alternateName: ["Mammoth Sleds", "MPS", "Mammoth Pull Systems"],
   url: SITE_URL,
-  logo: `${SITE_URL}/media/logo.svg`,
+  logo: `${SITE_URL}/media/logo-mammoth-pull-sleds.png`,
   image: [
     `${SITE_URL}/media/hero-convoy.jpg`,
     `${SITE_URL}/media/mastodon-profile.jpg`,

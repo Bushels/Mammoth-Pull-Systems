@@ -180,25 +180,27 @@ export default function Home() {
             <a
               href="#"
               aria-label={`${BRAND_NAME} home`}
-              className="flex items-center gap-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)] sm:gap-4"
+              className="flex flex-col items-start rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
             >
+              {/* Full brand lockup (monogram + sled illustration + wordmark).
+                  The brand name is baked into the artwork, so the adjacent
+                  HTML wordmark that used to sit next to the SVG mark is
+                  gone — the `alt` text below is what search crawlers see
+                  for the brand name. Intrinsic size is declared as the
+                  source's real pixel dimensions (1536x1024) so next/image
+                  can generate responsive sources without layout shift. */}
               <Image
-                src="/media/mark.svg"
-                alt={`${BRAND_NAME} mark`}
-                width={64}
-                height={64}
+                src="/media/logo-mammoth-pull-sleds.png"
+                alt={`${BRAND_NAME} — MPS heavy-haul sled logo`}
+                width={1536}
+                height={1024}
                 priority
-                unoptimized
-                className="h-auto w-12 drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)] sm:w-14 lg:w-16"
+                sizes="(min-width: 1024px) 208px, (min-width: 640px) 176px, 144px"
+                className="h-auto w-36 sm:w-44 lg:w-52"
               />
-              <div className="flex flex-col leading-none">
-                <span className="font-display text-xl uppercase tracking-[0.04em] text-white sm:text-2xl lg:text-[1.75rem]">
-                  {BRAND_NAME}
-                </span>
-                <span className="mt-1 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-white/75 sm:text-xs lg:tracking-[0.32em]">
-                  Heavy-Haul Snow &amp; Ice Sleds
-                </span>
-              </div>
+              <span className="mt-2 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-white/75 sm:text-xs lg:tracking-[0.32em]">
+                Heavy-Haul Snow &amp; Ice Sleds
+              </span>
             </a>
             <nav
               aria-label="Primary"
