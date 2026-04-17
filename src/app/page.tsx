@@ -96,11 +96,11 @@ const modelData: ModelCard[] = [
 const capabilityItems = [
   {
     title: "Built for the Slope",
-    body: "Prudhoe Bay, Deadhorse, and the ice roads between them. These sleds were designed around northern routes, not adapted to them.",
+    body: "From Anaktuvuk Pass to Point Lay and the snow roads between them. These sleds were designed around northern routes, not adapted to them.",
   },
   {
     title: "Built for Abuse",
-    body: "Structural steel frames. Point-loaded decks. Reinforcement where the ice hits first. Every sled on the road has already done real work.",
+    body: "Structural steel frames. Point-loaded decks. Reinforcement where it's needed to handle the rough arctic tundra. Every sled on the trail has already done real work.",
   },
   {
     title: "Field-Proven",
@@ -180,19 +180,24 @@ export default function Home() {
             <a
               href="#"
               aria-label={`${BRAND_NAME} home`}
-              className="flex items-center gap-4 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+              className="flex items-center gap-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)] sm:gap-4"
             >
               <Image
                 src="/media/logo.png"
-                alt={`${BRAND_NAME} logo`}
-                width={220}
-                height={145}
+                alt={`${BRAND_NAME} — heavy-haul snow and ice sleds`}
+                width={440}
+                height={290}
                 priority
-                className="h-auto w-36 drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)] sm:w-48 lg:w-56"
+                className="h-auto w-20 drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)] sm:w-28 lg:w-36"
               />
-              <span className="hidden max-w-48 text-xs font-semibold uppercase tracking-[0.3em] text-white/80 lg:block">
-                Heavy-Haul Snow Sleds
-              </span>
+              <div className="flex flex-col leading-none">
+                <span className="font-display text-xl uppercase tracking-[0.04em] text-white sm:text-2xl lg:text-[1.75rem]">
+                  Mammoth Pull Systems
+                </span>
+                <span className="mt-1 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-white/75 sm:text-xs lg:tracking-[0.32em]">
+                  Heavy-Haul Snow &amp; Ice Sleds
+                </span>
+              </div>
             </a>
             <nav
               aria-label="Primary"
@@ -297,9 +302,12 @@ export default function Home() {
             </h2>
             <p className="mt-6 max-w-lg text-base leading-8 text-slate-700 sm:text-lg">
               If you&apos;ve moved freight over frozen ground, you already know
-              what fails and what doesn&apos;t. Our sleds are built for the
-              second category &mdash; routes where recovery is expensive and
-              schedule is everything.
+              what works and what doesn&apos;t. Our sleds are built for{" "}
+              <span className="font-semibold text-[var(--color-deep-night)]">
+                &ldquo;Continuous Duty&rdquo;
+              </span>
+              &nbsp;&mdash; routes where recovery is expensive and schedule is
+              everything.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
