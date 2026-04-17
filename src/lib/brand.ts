@@ -34,7 +34,7 @@ export const CONTACT = {
   person: "Nathan Turchyn",
   phone: "+13068397481",
   phoneDisplay: "(306) 839-7481",
-  email: "info@mpsgroup.ca",
+  email: "nathan@mpsgroup.ca",
 } as const;
 
 // Main office — used for LocalBusiness schema and the footer. The office
