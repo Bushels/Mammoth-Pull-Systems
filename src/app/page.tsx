@@ -5,7 +5,7 @@ import { FadeIn } from "@/components/fade-in";
 import { HeroParallax } from "@/components/hero-parallax";
 import { InquiryForm } from "@/components/inquiry-form";
 import { SnowOverlay } from "@/components/snow-overlay";
-import { BRAND_NAME, CONTACT, MAMMOTH, MASTODON } from "@/lib/brand";
+import { ADDRESS, BRAND_NAME, CONTACT, MAMMOTH, MASTODON, OFFICE } from "@/lib/brand";
 
 const MAX_DECK_FEET = MAMMOTH.lengthFeet;
 const MAX_WEIGHT_LB = 90_000;
@@ -168,7 +168,7 @@ export default function Home() {
       <section className="relative isolate min-h-[100svh] overflow-hidden border-b border-white/10">
         <HeroParallax
           src="/media/hero-convoy.jpg"
-          alt="A convoy of tracked prime movers pulling Mammoth Pull Systems sleds across open arctic tundra."
+          alt={`A convoy of tracked prime movers pulling ${BRAND_NAME} sleds across open arctic tundra.`}
         />
         {/* Lighter gradient on the left only so more of the image breathes. */}
         <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(7,17,30,0.86)_0%,rgba(7,17,30,0.5)_45%,rgba(7,17,30,0.12)_75%,rgba(7,17,30,0.4)_100%)]" />
@@ -183,16 +183,17 @@ export default function Home() {
               className="flex items-center gap-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)] sm:gap-4"
             >
               <Image
-                src="/media/logo.png"
-                alt={`${BRAND_NAME} — heavy-haul snow and ice sleds`}
-                width={440}
-                height={290}
+                src="/media/mark.svg"
+                alt={`${BRAND_NAME} mark`}
+                width={64}
+                height={64}
                 priority
-                className="h-auto w-20 drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)] sm:w-28 lg:w-36"
+                unoptimized
+                className="h-auto w-12 drop-shadow-[0_4px_18px_rgba(0,0,0,0.45)] sm:w-14 lg:w-16"
               />
               <div className="flex flex-col leading-none">
                 <span className="font-display text-xl uppercase tracking-[0.04em] text-white sm:text-2xl lg:text-[1.75rem]">
-                  Mammoth Pull Systems
+                  {BRAND_NAME}
                 </span>
                 <span className="mt-1 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-white/75 sm:text-xs lg:tracking-[0.32em]">
                   Heavy-Haul Snow &amp; Ice Sleds
@@ -688,13 +689,63 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <FadeIn className="mt-12 border-t border-white/10 pt-8 text-sm leading-7 text-white/64">
-            <p className="font-display text-xl uppercase tracking-[0.05em] text-white">
-              {BRAND_NAME}
-            </p>
-            <p className="mt-1 max-w-xl">
-              Heavy-haul sleds built for snow and ice.
-            </p>
+          {/* Footer — visible NAP block (Name, Address, Phone). Google
+              weights this heavily for LocalBusiness ranking; schema.org
+              JSON-LD in layout.tsx mirrors these exact values. */}
+          <FadeIn className="mt-12 border-t border-white/10 pt-8">
+            <div className="grid gap-6 text-sm leading-7 text-white/68 sm:grid-cols-3">
+              <div>
+                <p className="font-display text-xl uppercase tracking-[0.05em] text-white">
+                  {BRAND_NAME}
+                </p>
+                <p className="mt-2 max-w-xs">
+                  Heavy-haul sleds built for snow and ice.
+                </p>
+              </div>
+
+              <address className="not-italic">
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-ice-blue)]">
+                  Office
+                </p>
+                <p className="mt-2">{ADDRESS.streetAddress}</p>
+                <p>
+                  {ADDRESS.addressLocality}, {ADDRESS.addressRegion}{" "}
+                  {ADDRESS.postalCode}
+                </p>
+                <p>Canada</p>
+                <p className="mt-3">
+                  <a
+                    href={`tel:${OFFICE.phone}`}
+                    className="rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+                  >
+                    {OFFICE.phoneDisplay}
+                  </a>
+                </p>
+              </address>
+
+              <div>
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-ice-blue)]">
+                  Sales
+                </p>
+                <p className="mt-2">{CONTACT.person}</p>
+                <p>
+                  <a
+                    href={`tel:${CONTACT.phone}`}
+                    className="rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+                  >
+                    {CONTACT.phoneDisplay}
+                  </a>
+                </p>
+                <p>
+                  <a
+                    href={`mailto:${CONTACT.email}`}
+                    className="rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+                  >
+                    {CONTACT.email}
+                  </a>
+                </p>
+              </div>
+            </div>
           </FadeIn>
         </div>
       </section>

@@ -68,7 +68,7 @@ export async function submitInquiry(
   // For now log the submission server-side so nothing is lost during dev.
   // Replace this block with a transactional send to `CONTACT.email` and
   // optionally a CRM webhook when the provider is chosen.
-  console.info("[Mammoth Pull Systems inquiry]", {
+  console.info("[Mammoth Pull Sleds inquiry]", {
     receivedAt: new Date().toISOString(),
     to: CONTACT.email,
     payload: values,

@@ -4,7 +4,7 @@ import type { MetadataRoute } from "next";
 // (and local dev) swap in their own host if needed; otherwise the apex
 // domain is the source of truth for the sitemap.
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mammothpullsystems.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mammothpullsleds.com";
 
 /**
  * Sitemap for the single-page site. The page is stitched from in-document

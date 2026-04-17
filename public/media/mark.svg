@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mammoth Pull Sleds mark">
+  <!--
+    Mark-only logo for use inside header lockups, where a separate HTML
+    wordmark supplies the brand name beside the icon. Identical geometry
+    to src/app/icon.svg (the favicon) so the brand reads as the same
+    mark at every scale and every placement.
+  -->
+  <rect width="64" height="64" rx="10" fill="#08111b"/>
+  <path
+    d="M 10 52 V 12 H 22 L 32 30 L 42 12 H 54 V 52 H 44 V 28 L 32 40 L 20 28 V 52 Z"
+    fill="#d62b1f"
+  />
+</svg>

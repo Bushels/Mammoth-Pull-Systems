@@ -1,6 +1,6 @@
-# Mammoth Pull Systems
+# Mammoth Pull Sleds
 
-Marketing site for Mammoth Pull Systems, focused on heavy-haul sleds built for snow and ice transport in Alaska and other northern operating environments.
+Marketing site for Mammoth Pull Sleds (previously marketed as Mammoth Pull Systems), focused on heavy-haul sleds built for snow and ice transport in Alaska and other northern operating environments. Fabrication shop in Pierceland, Saskatchewan.
 
 ## Stack
 

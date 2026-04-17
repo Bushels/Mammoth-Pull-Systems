@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mammothpullsystems.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mammothpullsleds.com";
 
 /**
  * Crawler policy.

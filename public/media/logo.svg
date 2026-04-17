@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 128" role="img" aria-label="Mammoth Pull Sleds">
+  <!--
+    Horizontal logo lockup: block "M" mark on the left, stacked wordmark on
+    the right. Designed to read at 40-96px tall in the header, but scales
+    cleanly up to large formats (print, truck decals, OG image).
+
+    Text is drawn via <text> elements with a stack of font-family fallbacks
+    so the logo renders consistently even when Barlow Condensed hasn't
+    loaded (email signatures, embedded previews, cached renders). The
+    condensed-sans fallback chain degrades gracefully.
+  -->
+
+  <!-- Mark: block M on deep-night rounded square. Same shape as the
+       favicon, scaled to match the wordmark height. -->
+  <g>
+    <rect x="0" y="0" width="128" height="128" rx="18" fill="#08111b"/>
+    <path
+      d="M 20 104 V 24 H 44 L 64 60 L 84 24 H 108 V 104 H 88 V 56 L 64 80 L 40 56 V 104 Z"
+      fill="#d62b1f"
+    />
+  </g>
+
+  <!-- Wordmark. "MAMMOTH" on the first line, "PULL SLEDS" slightly smaller
+       on the second. Dark navy text with red accent underline under the
+       first word for punch. -->
+  <g transform="translate(152, 0)" fill="#08111b">
+    <text
+      x="0"
+      y="58"
+      font-family="'Barlow Condensed', 'Oswald', 'Impact', 'Arial Narrow Bold', 'Arial Black', sans-serif"
+      font-weight="700"
+      font-size="54"
+      letter-spacing="1"
+    >MAMMOTH</text>
+    <!-- Red accent bar under MAMMOTH. -->
+    <rect x="0" y="64" width="56" height="4" fill="#d62b1f"/>
+    <text
+      x="0"
+      y="108"
+      font-family="'Barlow Condensed', 'Oswald', 'Impact', 'Arial Narrow Bold', 'Arial Black', sans-serif"
+      font-weight="600"
+      font-size="38"
+      letter-spacing="4"
+    >PULL SLEDS</text>
+  </g>
+</svg>

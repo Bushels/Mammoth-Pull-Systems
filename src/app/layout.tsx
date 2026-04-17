@@ -3,7 +3,7 @@ import { Barlow_Condensed, IBM_Plex_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { BRAND_NAME, CONTACT, MAMMOTH, MASTODON } from "@/lib/brand";
+import { ADDRESS, BRAND_NAME, CONTACT, MAMMOTH, MASTODON, OFFICE } from "@/lib/brand";
 
 import "./globals.css";
 
@@ -22,7 +22,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 // Canonical production URL. Set NEXT_PUBLIC_SITE_URL on Vercel to override
 // for preview deployments; falls back to the apex domain in prod.
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mammothpullsystems.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mammothpullsleds.com";
 
 const TITLE = `${BRAND_NAME} | Heavy-Haul Snow & Ice Sleds for the North Slope`;
 const DESCRIPTION = `${BRAND_NAME} builds heavy-haul snow and ice sleds — the 25' ${MASTODON.name} point-loader and the 53' ${MAMMOTH.name} long-deck hauler — for Alaska North Slope freight: tanks, modules, tracked equipment, and rigs across tundra and ice roads.`;
@@ -48,7 +48,8 @@ export const metadata: Metadata = {
     "oilfield sled",
     "drilling module transport",
     "tank hauling sled",
-    "Mammoth Pull Systems",
+    "Mammoth Pull Sleds",
+    "Mammoth sleds",
     "Mastodon sled",
     "Mammoth sled",
     "53 foot sled",
@@ -59,6 +60,8 @@ export const metadata: Metadata = {
     "Point Lay",
     "arctic oilfield equipment",
     "continuous duty sled",
+    "Pierceland Saskatchewan",
+    "prairie heavy haul fabrication",
   ],
   category: "industrial equipment",
   referrer: "origin-when-cross-origin",
@@ -88,7 +91,7 @@ export const metadata: Metadata = {
         url: "/media/hero-convoy.jpg",
         width: 1600,
         height: 900,
-        alt: "A convoy of tracked prime movers pulling Mammoth Pull Systems sleds across open arctic tundra.",
+        alt: `A convoy of tracked prime movers pulling ${BRAND_NAME} sleds across open arctic tundra.`,
       },
     ],
   },
@@ -98,17 +101,14 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: ["/media/hero-convoy.jpg"],
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/media/logo.png", type: "image/png" },
-    ],
-    apple: "/media/logo.png",
-  },
+  // Icons are handled by the Next.js file convention at:
+  //   src/app/icon.svg       -> favicon
+  //   src/app/apple-icon.svg -> iOS home-screen icon
+  // No explicit metadata.icons entry needed; Next wires the link tags.
   formatDetection: {
     telephone: true,
     email: true,
-    address: false,
+    address: true,
   },
   other: {
     // Allow AI crawlers to cite the site. Mirrored in robots.ts and llms.txt.
@@ -123,29 +123,51 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-// JSON-LD structured data. Two payloads: an Organization (the company) and
-// a pair of Products (the two sled models). Google, Bing, Perplexity, and
-// most LLM retrievers read these blocks as authoritative facts — this is
-// where "the company builds two sleds, one 25', one 53'" gets encoded in
-// machine-readable form.
-const organizationLd = {
+// =============================================================================
+// Structured data
+// =============================================================================
+// Four JSON-LD blocks emitted from the root layout:
+//   1. LocalBusiness  — the company (address, phones, area served, etc.)
+//   2. WebSite        — the site itself (points back to LocalBusiness)
+//   3. Product × 2    — the two sled models, with @id cross-refs to (1)
+//
+// LocalBusiness is a subtype of Organization — picking the subtype tells
+// Google the company has a physical location it serves customers from,
+// which is what unlocks the Knowledge Panel + "maps" card in search. The
+// @id strings let the Products reference the single business entity by
+// URL anchor so crawlers don't duplicate the company record.
+
+const businessLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": `${SITE_URL}/#organization`,
+  "@type": "LocalBusiness",
+  "@id": `${SITE_URL}/#business`,
   name: BRAND_NAME,
-  alternateName: ["Mammoth Sleds", "MPS"],
+  legalName: BRAND_NAME,
+  alternateName: ["Mammoth Sleds", "MPS", "Mammoth Pull Systems"],
   url: SITE_URL,
-  logo: `${SITE_URL}/media/logo.png`,
+  logo: `${SITE_URL}/media/logo.svg`,
+  image: [
+    `${SITE_URL}/media/hero-convoy.jpg`,
+    `${SITE_URL}/media/mastodon-profile.jpg`,
+    `${SITE_URL}/media/mammoth-crane.jpg`,
+  ],
   description: DESCRIPTION,
   slogan: "Built to Haul the North",
-  foundingLocation: {
-    "@type": "Place",
-    name: "Canada",
+  telephone: OFFICE.phone,
+  email: CONTACT.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: ADDRESS.streetAddress,
+    addressLocality: ADDRESS.addressLocality,
+    addressRegion: ADDRESS.addressRegion,
+    postalCode: ADDRESS.postalCode,
+    addressCountry: ADDRESS.addressCountry,
   },
   areaServed: [
     { "@type": "Place", name: "Alaska North Slope" },
     { "@type": "Place", name: "Arctic Canada" },
-    { "@type": "Place", name: "Northern Alberta" },
+    { "@type": "Place", name: "Saskatchewan" },
+    { "@type": "Place", name: "Alberta" },
     { "@type": "Place", name: "Northwest Territories" },
     { "@type": "Place", name: "Yukon" },
   ],
@@ -167,6 +189,13 @@ const organizationLd = {
       areaServed: ["US-AK", "CA"],
       availableLanguage: ["en"],
     },
+    {
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      telephone: OFFICE.phone,
+      areaServed: ["US-AK", "CA"],
+      availableLanguage: ["en"],
+    },
   ],
   sameAs: [] as string[],
 };
@@ -180,7 +209,7 @@ const mastodonProductLd = {
   description:
     "Compact 25-foot point-loader. Low deck, 32.5-inch deck height. Field-run at 40,000 to 60,000 lb. Built around tracked equipment and heavy iron — has hauled a CAT D8 dozer.",
   brand: { "@type": "Brand", name: BRAND_NAME },
-  manufacturer: { "@id": `${SITE_URL}/#organization` },
+  manufacturer: { "@id": `${SITE_URL}/#business` },
   category: "Heavy haul sled",
   image: `${SITE_URL}/media/mastodon-profile.jpg`,
   url: `${SITE_URL}/#models`,
@@ -205,7 +234,7 @@ const mammothProductLd = {
   description:
     "Full 53-foot usable deck. Rated 65,000 lb at highway speeds. Peak field load 85,000 lb. Built for tanks, drilling modules, and long freight across snow and ice.",
   brand: { "@type": "Brand", name: BRAND_NAME },
-  manufacturer: { "@id": `${SITE_URL}/#organization` },
+  manufacturer: { "@id": `${SITE_URL}/#business` },
   category: "Heavy haul sled",
   image: `${SITE_URL}/media/mammoth-crane.jpg`,
   url: `${SITE_URL}/#models`,
@@ -224,7 +253,7 @@ const websiteLd = {
   url: SITE_URL,
   name: BRAND_NAME,
   description: DESCRIPTION,
-  publisher: { "@id": `${SITE_URL}/#organization` },
+  publisher: { "@id": `${SITE_URL}/#business` },
   inLanguage: "en-US",
 };
 
@@ -246,7 +275,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(businessLd) }}
         />
         <script
           type="application/ld+json"

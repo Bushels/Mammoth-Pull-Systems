@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mammoth Pull Sleds">
+  <!-- Next.js App Router picks up src/app/icon.svg as the site favicon.
+       Block "M" in alert-red on deep-night, matching the site palette.
+       The path is a single closed outline drawn as a filled shape so the
+       icon is pixel-exact at 16x16 without relying on font availability. -->
+  <rect width="64" height="64" rx="10" fill="#08111b"/>
+  <path
+    d="M 10 52 V 12 H 22 L 32 30 L 42 12 H 54 V 52 H 44 V 28 L 32 40 L 20 28 V 52 Z"
+    fill="#d62b1f"
+  />
+</svg>
