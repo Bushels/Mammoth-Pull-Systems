@@ -24,11 +24,17 @@ export const MAMMOTH = {
 
 // Primary sales contact — the person a buyer talks to on the first call.
 // `phone` is E.164 for `tel:` hrefs; `phoneDisplay` is the human version.
+// `email` is the shared inbox where inquiry-form submissions land via
+// Resend — it is NOT surfaced in the UI or in structured data. Every
+// typed inquiry is routed through the form so leads arrive pre-formatted
+// with the five spec fields. If a second destination is ever needed,
+// split this into a separate `INQUIRY_INBOX` constant rather than
+// exposing a mailto on the site.
 export const CONTACT = {
   person: "Nathan Turchyn",
   phone: "+13068397481",
   phoneDisplay: "(306) 839-7481",
-  email: "nathan@mpsgroup.ca",
+  email: "info@mpsgroup.ca",
 } as const;
 
 // Main office — used for LocalBusiness schema and the footer. The office

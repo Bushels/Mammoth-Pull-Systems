@@ -154,7 +154,10 @@ const businessLd = {
   description: DESCRIPTION,
   slogan: "Built to Haul the North",
   telephone: OFFICE.phone,
-  email: CONTACT.email,
+  // LocalBusiness.email deliberately omitted. schema.org/ContactPoint is
+  // what Google and AI answer engines read when asked "how do I contact
+  // X" — leaving an email here would re-leak the address we just removed
+  // from the visible UI. Every inquiry routes through the form instead.
   address: {
     "@type": "PostalAddress",
     streetAddress: ADDRESS.streetAddress,
@@ -185,7 +188,7 @@ const businessLd = {
       contactType: "sales",
       name: CONTACT.person,
       telephone: CONTACT.phone,
-      email: CONTACT.email,
+      // email omitted by design — see LocalBusiness.email comment above.
       areaServed: ["US-AK", "CA"],
       availableLanguage: ["en"],
     },

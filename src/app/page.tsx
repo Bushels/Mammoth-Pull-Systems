@@ -180,7 +180,7 @@ export default function Home() {
             <a
               href="#"
               aria-label={`${BRAND_NAME} home`}
-              className="flex flex-col items-start rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+              className="flex items-center gap-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)] sm:gap-4 lg:gap-5"
             >
               {/* Full brand lockup (monogram + sled illustration + wordmark).
                   The brand name is baked into the artwork, so the adjacent
@@ -195,11 +195,22 @@ export default function Home() {
                 width={1536}
                 height={1024}
                 priority
-                sizes="(min-width: 1024px) 208px, (min-width: 640px) 176px, 144px"
-                className="h-auto w-36 sm:w-44 lg:w-52"
+                sizes="(min-width: 1024px) 256px, (min-width: 640px) 208px, 176px"
+                className="h-auto w-44 sm:w-52 lg:w-64"
               />
-              <span className="mt-2 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-white/75 sm:text-xs lg:tracking-[0.32em]">
-                Heavy-Haul Snow &amp; Ice Sleds
+              {/* Hairline rule binds the tagline to the logo as part of a
+                  single lockup — a classic print-branding idiom that tells
+                  the eye "these two elements belong to each other." Only
+                  appears from sm up so mobile stays to the logo alone. */}
+              <span
+                aria-hidden="true"
+                className="hidden h-10 w-px bg-white/20 sm:block lg:h-12"
+              />
+              {/* Sentence case + no letter-spacing deliberately breaks
+                  parity with the uppercase-tracked primary nav below, so
+                  this reads as positioning copy rather than a menu peer. */}
+              <span className="hidden max-w-[13rem] text-sm font-medium leading-snug text-white/75 sm:block lg:max-w-[15rem] lg:text-base">
+                Heavy-haul snow &amp; ice sleds
               </span>
             </a>
             <nav
@@ -612,11 +623,12 @@ export default function Home() {
           <FadeIn className="max-w-3xl">
             <p className="eyebrow text-[var(--color-ice-blue)]">Request Specs</p>
             <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-[0.04em] text-white sm:text-5xl">
-              Call, email, or send the five things.
+              Call us, or send the five things.
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/74 sm:text-lg">
-              Prefer to talk? Pick up the phone. Prefer to type? Send the load,
-              route, and timeline and we&apos;ll come back with a plan.
+              Prefer to talk? Pick up the phone. Prefer to type? Fill the form
+              below with the load, route, and timeline and we&apos;ll come back
+              with a plan.
             </p>
           </FadeIn>
 
@@ -643,30 +655,40 @@ export default function Home() {
               </span>
             </a>
 
+            {/* Second card deliberately points at the form anchor rather
+                than exposing a mailto. We route every typed inquiry
+                through the form so every lead lands in one place with
+                the five spec fields already captured. */}
             <a
-              href={`mailto:${CONTACT.email}`}
+              href="#inquiry-form"
               className="group flex items-center justify-between gap-4 rounded-2xl border border-white/12 bg-white/[0.04] p-5 transition hover:border-white/24 hover:bg-white/[0.08] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
             >
               <div className="min-w-0">
-                <p className="eyebrow text-[var(--color-ice-blue)]">Email</p>
-                <p className="mt-1 truncate font-display text-2xl uppercase tracking-[0.05em] text-white sm:text-3xl">
-                  {CONTACT.email}
+                <p className="eyebrow text-[var(--color-ice-blue)]">Request specs</p>
+                <p className="mt-1 font-display text-2xl uppercase tracking-[0.05em] text-white sm:text-3xl">
+                  Send the five
                 </p>
                 <p className="mt-1 text-sm text-white/60">
-                  Responses within one business day
+                  Load, route, timing — one business day reply
                 </p>
               </div>
               <span
                 aria-hidden="true"
                 className="flex h-12 w-12 flex-none items-center justify-center rounded-full border border-white/20 text-lg transition group-hover:border-white/40"
               >
-                ✉
+                ↓
               </span>
             </a>
           </FadeIn>
 
-          {/* Or the form, which is clearly a third option. */}
-          <FadeIn className="mt-10 rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(214,43,31,0.12),rgba(76,132,181,0.10))] p-6 sm:p-8 lg:p-10">
+          {/* The form. `#inquiry-form` is the target of the "Send the
+              five" CTA card above — keeps the anchor scroll consistent
+              even if the section id (`#inquiry`) is landed on from the
+              main nav. */}
+          <FadeIn
+            id="inquiry-form"
+            className="mt-10 rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(214,43,31,0.12),rgba(76,132,181,0.10))] p-6 sm:p-8 lg:p-10 scroll-mt-24"
+          >
             <p className="eyebrow text-[var(--color-ice-blue)]">Or send the five</p>
             <h3 className="mt-3 font-display text-3xl uppercase tracking-[0.05em] text-white sm:text-4xl">
               Tell us what you&apos;re hauling.
@@ -738,12 +760,15 @@ export default function Home() {
                     {CONTACT.phoneDisplay}
                   </a>
                 </p>
-                <p>
+                {/* Email intentionally omitted — every typed inquiry
+                    routes through the form at #inquiry-form so leads
+                    arrive pre-formatted with the five spec fields. */}
+                <p className="mt-1 text-sm text-white/55">
                   <a
-                    href={`mailto:${CONTACT.email}`}
-                    className="rounded-sm transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
+                    href="#inquiry-form"
+                    className="rounded-sm underline-offset-4 transition hover:text-white hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ice-blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-deep-night)]"
                   >
-                    {CONTACT.email}
+                    Send specs via form →
                   </a>
                 </p>
               </div>

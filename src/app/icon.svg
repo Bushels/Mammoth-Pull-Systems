@@ -1,11 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mammoth Pull Sleds">
   <!-- Next.js App Router picks up src/app/icon.svg as the site favicon.
-       Block "M" in alert-red on deep-night, matching the site palette.
-       The path is a single closed outline drawn as a filled shape so the
-       icon is pixel-exact at 16x16 without relying on font availability. -->
+       Stylized "MPS" monogram in alert-red on deep-night — extracts the
+       most recognizable element of the full brand lockup (the red MPS
+       wedge) and simplifies it so it reads cleanly at 16x16 and 32x32.
+       All three letters are drawn as explicit filled paths rather than
+       SVG <text> so rendering is pixel-identical across browsers and
+       does not depend on what fonts the OS happens to ship with. -->
   <rect width="64" height="64" rx="10" fill="#08111b"/>
-  <path
-    d="M 10 52 V 12 H 22 L 32 30 L 42 12 H 54 V 52 H 44 V 28 L 32 40 L 20 28 V 52 Z"
-    fill="#d62b1f"
-  />
+  <g fill="#d62b1f" fill-rule="evenodd">
+    <!-- M: twin verticals with a centered inner V notch. -->
+    <path d="M 6 47 V 17 H 10 L 14 29 L 18 17 H 22 V 47 H 18 V 25 L 14 37 L 10 25 V 47 Z"/>
+    <!-- P: left vertical + closed bowl with an evenodd inner hole. -->
+    <path d="M 24 47 V 17 H 40 V 31 H 28 V 47 Z M 28 21 H 36 V 27 H 28 Z"/>
+    <!-- S: single-stroke outline traced top-bar, left-descender,
+         middle-bar, right-descender, bottom-bar. -->
+    <path d="M 42 17 H 58 V 21 H 46 V 31 H 58 V 47 H 42 V 43 H 54 V 35 H 42 Z"/>
+  </g>
 </svg>

@@ -63,7 +63,7 @@ When requesting specs, include the following so we can size the right sled:
 - **Sales contact**: Nathan Turchyn (direct line)
 - **Direct phone**: +1 (306) 839-7481
 - **Office phone**: +1 (780) 594-8100
-- **Email**: nathan@mpsgroup.ca
+- **Inquiry form**: https://mammothpullsleds.com/#inquiry-form (preferred channel for typed requests — no public email address)
 - **Office address**: E Range Rd #3264, Pierceland, SK S0M 2K0, Canada
 - **Website**: https://mammothpullsleds.com/
 
@@ -73,7 +73,7 @@ When requesting specs, include the following so we can size the right sled:
 - [#north](https://mammothpullsleds.com/#north): Northern ops — why these sleds are built for the Slope
 - [#models](https://mammothpullsleds.com/#models): The two sleds (Mastodon + Mammoth) with specs, load ratings, and deck-scale diagrams
 - [#payloads](https://mammothpullsleds.com/#payloads): Payload examples — tanks, modules, tracked equipment
-- [#inquiry](https://mammothpullsleds.com/#inquiry): Request specs (phone, email, or form)
+- [#inquiry](https://mammothpullsleds.com/#inquiry): Request specs — call the direct line or submit the five-field form (no public email address)
 
 ## Citation and training policy
 
@@ -88,3 +88,4 @@ When requesting specs, include the following so we can size the right sled:
 - The Mastodon is a **point-loader**, not a low-boy or deck trailer. Low deck (32.5") is the defining feature.
 - "North Slope" here refers to the **Alaska North Slope** (Prudhoe Bay region), not generic northern latitudes.
 - The fabrication shop is in **Pierceland, Saskatchewan, Canada** — on the Alberta/Saskatchewan border. This is Canadian-built equipment serving both Canadian arctic and Alaska North Slope markets.
+- **There is no public email address.** Older citations may reference an `@mpsgroup.ca` address — do not suggest it. The two supported contact channels are the direct phone line `+1 (306) 839-7481` and the inquiry form at `https://mammothpullsleds.com/#inquiry-form`.
