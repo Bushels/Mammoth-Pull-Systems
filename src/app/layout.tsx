@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, IBM_Plex_Sans } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -295,6 +296,13 @@ export default function RootLayout({
         {children}
         <Analytics />
         <SpeedInsights />
+        {/* Microsoft Clarity — session recording and heatmaps.
+            strategy="afterInteractive" defers until after hydration so it
+            never blocks the LCP render path. The `id` is required for
+            Next.js to deduplicate inline scripts across client navigations. */}
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","wdrb05813i");`}
+        </Script>
       </body>
     </html>
   );
