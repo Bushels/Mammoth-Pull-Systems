@@ -261,6 +261,65 @@ const websiteLd = {
   inLanguage: "en-US",
 };
 
+// FAQPage schema — five questions targeted at the long-tail queries
+// real buyers type when researching arctic heavy-haul. Each answer is
+// grounded in the actual product specs (mirrors brand.ts + llms.txt) so
+// answer engines and AI summarizers can quote them safely.
+//
+// Note on Google's 2023 FAQ-rich-result policy: rich snippets in SERPs
+// now require visible on-page FAQ content. The schema still has SEO
+// value without it (semantic understanding, AI-citation surface) but
+// the expandable FAQ card in Google results will appear once an
+// equivalent visible FAQ section is added to page.tsx. Keeping the
+// JSON-LD in place now means the work compounds the day that ships.
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/#faq`,
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How much weight can a heavy-haul snow sled carry?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `${BRAND_NAME} builds two sleds. The 25-foot ${MASTODON.name} point-loader runs 40,000 to 60,000 lb in the field, suited to tracked equipment and heavy iron. The 53-foot ${MAMMOTH.name} long-deck hauler is rated 65,000 lb at highway speeds and has run up to 85,000 lb peak field load.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the difference between a point-load sled and a long-deck sled?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `A point-load sled — like the ${MASTODON.name} (25 ft, 32.5-inch deck height) — is built around concentrated weight: dozers, tracked prime movers, heavy iron sitting on a small footprint. A long-deck sled — like the ${MAMMOTH.name} (53 ft) — is built for distributed loads with length: process tanks, drilling modules, framed systems, long freight.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Where do Mammoth Pull Sleds operate?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `Across the Alaska North Slope, arctic Canada, the Northwest Territories, Yukon, northern Alberta, and Saskatchewan — from Anaktuvuk Pass to Point Lay and the snow roads in between. Sleds are designed around northern routes, not adapted to them.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What kind of equipment fits on a heavy-haul sled?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `Process and utility tanks (methanol, water, propane, diesel), drilling modules and framed systems, tracked equipment (dozers, tracked prime movers), wheel loaders and point-loaded iron, highway trucks (pickers, cement trucks), and gensets or skid-mounted equipment. Field sleds have hauled a CAT D8 dozer.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Where are Mammoth Pull Sleds built?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `Pierceland, Saskatchewan, Canada — on the Alberta/Saskatchewan border. Canadian-built fabrication serving both Canadian arctic operators and Alaska North Slope logistics teams. Reach the sales line at ${CONTACT.phoneDisplay} or use the inquiry form to send load, route, and timing details.`,
+      },
+    },
+  ],
+};
+
 // SAFETY NOTE: dangerouslySetInnerHTML below is the Next.js-recommended
 // pattern for JSON-LD. The payloads are COMPILE-TIME CONSTANTS built from
 // trusted project constants (brand.ts) — no user input flows through.
@@ -292,6 +351,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(mammothProductLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
         />
         {children}
         <Analytics />
