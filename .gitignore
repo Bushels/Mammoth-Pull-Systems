@@ -41,7 +41,15 @@ yarn-error.log*
 # local tooling artifacts
 .playwright-cli/
 .playwright-mcp/
-.claude/
+# .claude/ holds Claude Code project-local config. Track agents/ and skills/
+# (project-specific routing/personas), but ignore runtime files like
+# scheduled_tasks.lock and settings.local.json.
+.claude/*
+!.claude/agents/
+!.claude/agents/**
+!.claude/skills/
+!.claude/skills/**
+.claude/settings.local.json
 output/
 
 # dev-only screenshot / snapshot artifacts at repo root
