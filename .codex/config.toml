@@ -1,0 +1,10 @@
+# Codex CLI per-project configuration.
+# Authoritative reference: https://github.com/openai/codex/blob/main/docs/config.md
+# Bumped per MPS portfolio cleanup (docs/templates/portfolio-cleanup-prompt.md).
+#
+# Top-level keys are flat strings (NOT a [model] table) — that is the format
+# the Codex CLI 0.125+ config parser expects. See ~/.codex/config.toml for the
+# canonical example.
+
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
